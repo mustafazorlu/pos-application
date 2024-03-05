@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+.ant-btn-primary {
+  background-color: #1677ff;
+}
+
+.body,
+html {
+  font-family: "Noto Sans", sans-serif;
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
+}
