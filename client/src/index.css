@@ -9,14 +9,19 @@
 }
 
 
-
-
 body,
 html {
   margin: 0;
   font-family: "Noto Sans", sans-serif;
+
 }
 
 .categories::-webkit-scrollbar {
   display: none;
 }
+
+.products::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width:768px) {}
