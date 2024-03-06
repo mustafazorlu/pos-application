@@ -8,8 +8,12 @@
   background-color: #1677ff;
 }
 
-.body,
+
+
+
+body,
 html {
+  margin: 0;
   font-family: "Noto Sans", sans-serif;
 }
 
