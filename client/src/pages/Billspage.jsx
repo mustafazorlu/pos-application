@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import { Button, Card, Table } from "antd";
-import CreateBill from "../components/CreateBill";
+import PrintBill from "../components/PrintBill";
 
-const Cartpage = () => {
+const Billspage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dataSource = [
         {
@@ -75,11 +75,14 @@ const Cartpage = () => {
                             Sipariş Oluştur
                         </Button>
                     </Card>
+                    <PrintBill
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                    />
                 </div>
             </div>
-            <CreateBill isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
         </>
     );
 };
 
-export default Cartpage;
+export default Billspage;

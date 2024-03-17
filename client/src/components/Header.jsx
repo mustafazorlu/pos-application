@@ -8,15 +8,16 @@ import {
     BarChartOutlined,
     LogoutOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     return (
         <div className="border-b mb-6">
             <header className="py-4 px-6 flex items-center justify-between gap-10">
                 <div className="logo">
-                    <a href="/">
+                    <Link to="/">
                         <h2 className="text-2xl font-bold md:text-4xl">LOGO</h2>
-                    </a>
+                    </Link>
                 </div>
                 <div className="header-search flex-1 flex justify-center">
                     <Input
@@ -27,59 +28,59 @@ const Header = () => {
                     />
                 </div>
                 <div className="menu-links z-50 flex justify-between items-center gap-7 md:static fixed bottom-0 md:w-auto w-full md:bg-transparent left-0 border-t md:border-t-0 md:p-0 p-4 bg-white">
-                    <a
-                        href="#/"
+                    <Link
+                        to="/"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <HomeOutlined className="text-xl" />
                         <span className="text-sm">Ana Sayfa</span>
-                    </a>
+                    </Link>
                     <Badge count={5} className="md:flex hidden">
-                        <a
-                            href="#/"
+                        <Link
+                            to="/cart"
                             className="flex flex-col items-center hover:text-[#40a9ff]"
                         >
                             <ShoppingCartOutlined className="text-xl" />
                             <span className="text-sm">Sepet</span>
-                        </a>
+                        </Link>
                     </Badge>
-                    <a
-                        href="#/"
+                    <Link
+                        to="/bills"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <CopyOutlined className="text-xl" />
                         <span className="text-sm">Faturalar</span>
-                    </a>
-                    <a
-                        href="#/"
+                    </Link>
+                    <Link
+                        to="/customers"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <UserOutlined className="text-xl" />
                         <span className="text-sm">Müşteriler</span>
-                    </a>
-                    <a
-                        href="#/"
+                    </Link>
+                    <Link
+                        to="/statistic"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <BarChartOutlined className="text-xl" />
                         <span className="text-sm">İstatistikler</span>
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="#/"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <LogoutOutlined className="text-xl" />
                         <span className="text-sm">Çıkış</span>
-                    </a>
+                    </Link>
                 </div>
                 <Badge count={5} className="md:hidden flex">
-                    <a
+                    <Link
                         href="#/"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <ShoppingCartOutlined className="text-2xl" />
                         <span className="text-sm">Sepet</span>
-                    </a>
+                    </Link>
                 </Badge>
             </header>
         </div>
