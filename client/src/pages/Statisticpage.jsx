@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import StatisticCard from "../components/StatisticCard";
-import { Area, Pie } from "@ant-design/plots";
+// import { Area, Pie } from "@ant-design/plots";
 const Statisticpage = () => {
     const [data, setData] = useState([]);
 
@@ -127,10 +127,10 @@ const Statisticpage = () => {
                     </div>
                     <div className="flex gap-10 lg:flex-row flex-col">
                         <div className="lg:w-1/2 lg:h-full h-72">
-                            <Area {...config} />
+                            {/* <Area {...config} /> */}
                         </div>
                         <div className="lg:w-1/2 lg:h-full h-72">
-                            <Pie {...config2} />
+                            {/* <Pie {...config2} /> */}
                         </div>
                     </div>
                 </div>

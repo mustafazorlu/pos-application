@@ -37,7 +37,6 @@ app.use("/api/products", productRoute);
 app.use("/api/bills", billRoute);
 
 //user routes
-app.use("/api/bills", billRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/users", usersRoute);
 

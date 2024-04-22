@@ -1,45 +1,110 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
-import { Button, Card, Table } from "antd";
+import { Button, Card, Table, message } from "antd";
 import CreateBill from "../components/CreateBill";
+import { useDispatch, useSelector } from "react-redux";
+import { decrease, deleteCart, increase } from "../redux/cartslice";
+
+import { ClearOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
 
 const Cartpage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const dataSource = [
-        {
-            key: "1",
-            name: "Mike",
-            age: 32,
-            address: "10 Downing Street",
-        },
-        {
-            key: "2",
-            name: "John",
-            age: 42,
-            address: "10 Downing Street",
-        },
-        {
-            key: "3",
-            name: "Ash",
-            age: 30,
-            address: "30 Downing Street",
-        },
-    ];
+    const cart = useSelector((state) => state.cart);
+    const dispatch = useDispatch();
+
     const columns = [
         {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
+            title: "Ürün Görseli",
+            dataIndex: "img",
+            key: "img",
+            width: "150px",
+            render: (text) => {
+                return (
+                    <img className="w-full h-[80px] object-cover" src={text} />
+                );
+            },
         },
         {
-            title: "Age",
-            dataIndex: "age",
-            key: "age",
+            title: "Ürün Adı",
+            dataIndex: "title",
+            key: "title",
         },
         {
-            title: "Address",
-            dataIndex: "address",
-            key: "address",
+            title: "Kategori",
+            dataIndex: "category",
+            key: "category",
+        },
+        {
+            title: "Ürün Fiyatı",
+            dataIndex: "price",
+            key: "price",
+            render: (text) => {
+                return <span>{text.toFixed(2)}₺</span>;
+            },
+        },
+        {
+            title: "Ürün Adeti",
+            dataIndex: "quantity",
+            key: "quantity",
+            render: (text, record) => {
+                return (
+                    <div className="flex items-center gap-2">
+                        <Button
+                            type="primary"
+                            size="small"
+                            icon={<PlusOutlined />}
+                            onClick={() => dispatch(increase(record))}
+                        ></Button>
+                        <span className="w-5 inline-block text-center">
+                            {record.quantity}
+                        </span>
+                        <Button
+                            type="primary"
+                            size="small"
+                            icon={<MinusOutlined />}
+                            //burası önemli !!! bu mantığı anla :D
+                            onClick={() => {
+                                if (record.quantity === 1) {
+                                    if (window.confirm("Ürün silinsin mi?")) {
+                                        dispatch(decrease(record));
+                                        message.warning(
+                                            "Ürün sepetten silindi"
+                                        );
+                                    }
+                                }
+                                if (record.quantity > 1) {
+                                    dispatch(decrease(record));
+                                }
+                            }}
+                        ></Button>
+                    </div>
+                );
+            },
+        },
+        {
+            title: "Toplam Fiyat",
+            render: (text, record) => {
+                return (
+                    <span>{(record.price * record.quantity).toFixed(2)}₺</span>
+                );
+            },
+        },
+        {
+            title: "Aksiyonlar",
+            render: (_, record) => {
+                return (
+                    <Button
+                        type="primary"
+                        danger
+                        onClick={() => {
+                            dispatch(deleteCart(record));
+                            message.success("Ürün sepetten silindi.");
+                        }}
+                    >
+                        Sil
+                    </Button>
+                );
+            },
         },
     ];
     return (
@@ -48,7 +113,7 @@ const Cartpage = () => {
             <div className="px-6">
                 <Table
                     bordered
-                    dataSource={dataSource}
+                    dataSource={cart.cartItems}
                     columns={columns}
                     pagination={false}
                 />
@@ -77,7 +142,10 @@ const Cartpage = () => {
                     </Card>
                 </div>
             </div>
-            <CreateBill isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
+            <CreateBill
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            />
         </>
     );
 };

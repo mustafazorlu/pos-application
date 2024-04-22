@@ -13,14 +13,23 @@ const Homepage = () => {
                 "http://localhost:5000/api/categories/get-all"
             );
             const data = await res.json();
-            setCategories(data);
+            data &&
+                setCategories(
+                    data.map((item) => {
+                        return {
+                            ...item,
+                            value: item.title,
+                            label: item.title,
+                        };
+                    })
+                );
         } catch (error) {
             console.log(error);
         }
     };
     useEffect(() => {
         getCategories();
-    },[]);
+    }, []);
 
     return (
         <>
@@ -33,7 +42,7 @@ const Homepage = () => {
                     />
                 </div>
                 <div className="products flex-[8] max-h-[calc(100vh_-_97px)] overflow-auto">
-                    <Products />
+                    <Products categories={categories} />
                 </div>
                 <div className="cart-totals min-w-[300px] md:-mr-[24px] md:-mt-[24px] border-l">
                     <CartTotals />

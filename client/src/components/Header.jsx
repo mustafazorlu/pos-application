@@ -9,8 +9,10 @@ import {
     LogoutOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
+    const { cartItems } = useSelector((state) => state.cart);
     return (
         <div className="border-b mb-6">
             <header className="py-4 px-6 flex items-center justify-between gap-10">
@@ -35,7 +37,7 @@ const Header = () => {
                         <HomeOutlined className="text-xl" />
                         <span className="text-sm">Ana Sayfa</span>
                     </Link>
-                    <Badge count={5} className="md:flex hidden">
+                    <Badge count={cartItems.length} className="md:flex hidden">
                         <Link
                             to="/cart"
                             className="flex flex-col items-center hover:text-[#40a9ff]"
@@ -58,13 +60,13 @@ const Header = () => {
                         <UserOutlined className="text-xl" />
                         <span className="text-sm">Müşteriler</span>
                     </Link>
-                    <Link
+                    {/* <Link
                         to="/statistic"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
                     >
                         <BarChartOutlined className="text-xl" />
                         <span className="text-sm">İstatistikler</span>
-                    </Link>
+                    </Link> */}
                     <Link
                         href="#/"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
@@ -73,7 +75,7 @@ const Header = () => {
                         <span className="text-sm">Çıkış</span>
                     </Link>
                 </div>
-                <Badge count={5} className="md:hidden flex">
+                <Badge count={cartItems.length} className="md:hidden flex">
                     <Link
                         href="#/"
                         className="flex flex-col items-center hover:text-[#40a9ff]"
