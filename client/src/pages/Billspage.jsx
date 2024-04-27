@@ -1,45 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import { Button, Card, Table } from "antd";
 import PrintBill from "../components/PrintBill";
 
 const Billspage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const dataSource = [
-        {
-            key: "1",
-            name: "Mike",
-            age: 32,
-            address: "10 Downing Street",
-        },
-        {
-            key: "2",
-            name: "John",
-            age: 42,
-            address: "10 Downing Street",
-        },
-        {
-            key: "3",
-            name: "Ash",
-            age: 30,
-            address: "30 Downing Street",
-        },
-    ];
+    const [customer, setCustomer] = useState();
+    const [billItems, setBillItems] = useState([]);
+
+    console.log(customer);
+    const getBills = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/api/bills/get-all");
+            const data = await res.json();
+            setBillItems(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        getBills();
+    }, []);
+
     const columns = [
         {
-            title: "Name",
-            dataIndex: "name",
-            key: "name",
+            title: "Müşteri Adı",
+            dataIndex: "customerName",
+            key: "customerName",
         },
         {
-            title: "Age",
-            dataIndex: "age",
-            key: "age",
+            title: "Telefon Numarası",
+            dataIndex: "customerPhoneNumber",
+            key: "customerPhoneNumber",
         },
         {
-            title: "Address",
-            dataIndex: "address",
-            key: "address",
+            title: "Oluşturma Tarihi",
+            dataIndex: "createdAt",
+            key: "createdAt",
+            render: (text, record) => {
+                return <span>{text.substring(0, 10)}</span>;
+            },
+        },
+        {
+            title: "Ödeme Yöntemi",
+            dataIndex: "paymentMode",
+            key: "paymentMode",
+        },
+        {
+            title: "Ödeme Yöntemi",
+            dataIndex: "paymentMode",
+            key: "paymentMode",
+        },
+        {
+            title: "Toplam Fiyat",
+            dataIndex: "totalAmount",
+            key: "totalAmount",
+            render: (text, record) => {
+                return <span>{text}₺</span>;
+            },
+        },
+        {
+            title: "Yazdır",
+            render: (text, record) => {
+                return (
+                    <Button
+                        className="pl-0"
+                        onClick={() => {
+                            setIsModalOpen(true);
+                            setCustomer(record);
+                        }}
+                        type="link"
+                    >
+                        Yazdır
+                    </Button>
+                );
+            },
         },
     ];
     return (
@@ -48,38 +84,15 @@ const Billspage = () => {
             <div className="px-6">
                 <Table
                     bordered
-                    dataSource={dataSource}
+                    dataSource={billItems}
                     columns={columns}
                     pagination={false}
                 />
-                <div className="cart-total flex justify-end">
-                    <Card className="w-72 mt-6">
-                        <div className="flex justify-between">
-                            <span>Ara Toplam</span>
-                            <span>548.00₺</span>
-                        </div>
-                        <div className="flex justify-between my-2">
-                            <span>KDV Toplam %8</span>
-                            <span className="text-red-600">+43.92₺</span>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="font-bold">Toplam</span>
-                            <span className="font-bold">548.00₺</span>
-                        </div>
-                        <Button
-                            type="primary"
-                            className="mt-3 w-full"
-                            size="large"
-                            onClick={() => setIsModalOpen(true)}
-                        >
-                            Sipariş Oluştur
-                        </Button>
-                    </Card>
-                    <PrintBill
-                        isModalOpen={isModalOpen}
-                        setIsModalOpen={setIsModalOpen}
-                    />
-                </div>
+                <PrintBill
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                    customer={customer}
+                />
             </div>
         </>
     );

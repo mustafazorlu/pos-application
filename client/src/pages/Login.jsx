@@ -1,14 +1,31 @@
-import { Button, Carousel, Checkbox, Form, Input } from "antd";
+import { Button, Carousel, Checkbox, Form, Input, message } from "antd";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
-    const contentStyle = {
-        height: "160px",
-        color: "#fff",
-        lineHeight: "160px",
-        textAlign: "center",
+    const navigate = useNavigate();
+
+    const onFinish = async (values) => {
+        try {
+            const res = await fetch("http://localhost:5000/api/auth/login", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-type": "application/json; charset=UTF-8" },
+            });
+            const user = await res.json();
+            if (res.status === 200) {
+                message.success("Giriş işlemi başarılı");
+                navigate("/");
+            } else if (res.status === 204) {
+                message.error("Kullanıcı bulunamadı");
+            } else {
+                message.error("Kullanıcı adı veya şifre yanlış");
+            }
+        } catch (error) {
+            message.error("Bir hata oluştu tekrar dene");
+        }
     };
+
     return (
         <div className="h-screen">
             <div className="flex justify-between h-full">
@@ -16,7 +33,13 @@ const Login = () => {
                     <h1 className="text-center text-5xl font-bold mb-2">
                         LOGO
                     </h1>
-                    <Form layout="vertical">
+                    <Form
+                        layout="vertical"
+                        onFinish={onFinish}
+                        initialValues={{
+                            remember: false,
+                        }}
+                    >
                         <Form.Item
                             label="Email"
                             name={"email"}
@@ -54,14 +77,14 @@ const Login = () => {
                                 size="large"
                                 className="w-full"
                             >
-                                Kaydol
+                                Giriş Yap
                             </Button>
                         </Form.Item>
                     </Form>
                     <div className="haveAnAccount text-center left-0 absolute w-full bottom-10">
                         Henüz bir hesabınız yok mu?{" "}
                         <Link to={"/register"} className="text-blue-600">
-                            Şimdi kaybol!
+                            Şimdi kaydol!
                         </Link>
                     </div>
                 </div>

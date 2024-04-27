@@ -1,10 +1,15 @@
 import { Button, Modal } from "antd";
-import React from "react";
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
-const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
-    const onFinish = (values) => {
-        console.log(values);
-    };
+const PrintBill = ({ isModalOpen, setIsModalOpen, customer }) => {
+    const componentRef = useRef();
+
+    const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+    });
+
+    console.log(customer);
     return (
         <Modal
             title="Fatura Oluştur"
@@ -13,7 +18,7 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
             onCancel={() => setIsModalOpen(false)}
             width={1000}
         >
-            <section className="bg-black py-20">
+            <section className="bg-black py-20" ref={componentRef}>
                 <div className="max-w-5xl mx-auto bg-white px-6">
                     <article className="overflow-hidden">
                         <div className="logo my-6">
@@ -46,13 +51,18 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                         <p className="text-slate-600 font-semibold">
                                             Fatura Numarası:
                                         </p>
-                                        <p>1234</p>
+                                        <p>{customer?._id}</p>
                                     </div>
                                     <div className="mt-2">
                                         <p className="text-slate-600 font-semibold">
                                             Veriliş Tarihi:
                                         </p>
-                                        <p>2022-11-21</p>
+                                        <p>
+                                            {customer?.createdAt.substring(
+                                                0,
+                                                10
+                                            )}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="text-md text-slate-500 hidden md:block">
@@ -108,31 +118,39 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td className="py-4 ">
-                                            <img
-                                                src="https://cdn.yemek.com/uploads/2015/10/elma-zencefil-suyu-aralik-2020.jpg"
-                                                alt=""
-                                                className="w-12 h-12 object-cover"
-                                            />
-                                        </td>
-                                        <td className="py-4 ">
-                                            <span className="font-medium">
-                                                Şalgam
-                                            </span>
-                                        </td>
-                                        <td className="py-4  text-center">
-                                            <span>5₺</span>
-                                        </td>
-                                        <td className="py-4  text-center">
-                                            <span>1</span>
-                                        </td>
-                                        <td className="py-4 text-end">
-                                            <span className="font-medium">
-                                                5.00₺
-                                            </span>
-                                        </td>
-                                    </tr>
+                                    {customer?.cartItems?.map((item) => (
+                                        <tr>
+                                            <td className="py-4 ">
+                                                <img
+                                                    src={item.img}
+                                                    alt=""
+                                                    className="w-12 h-12 object-cover"
+                                                />
+                                            </td>
+                                            <td className="py-4 ">
+                                                <span className="font-medium">
+                                                    {item.title}
+                                                </span>
+                                            </td>
+                                            <td className="py-4  text-center">
+                                                <span>
+                                                    {item.price.toFixed(2)}₺
+                                                </span>
+                                            </td>
+                                            <td className="py-4  text-center">
+                                                <span>{item.quantity}</span>
+                                            </td>
+                                            <td className="py-4 text-end">
+                                                <span className="font-medium">
+                                                    {(
+                                                        item.price *
+                                                        item.quantity
+                                                    ).toFixed(2)}
+                                                    ₺
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                                 <tfoot>
                                     <tr>
@@ -151,7 +169,7 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                             scope="row"
                                         >
                                             <span className="font-normal">
-                                                61₺
+                                                {customer?.subTotal.toFixed(2)}₺
                                             </span>
                                         </th>
                                     </tr>
@@ -162,7 +180,7 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                             scope="row"
                                         >
                                             <span className="font-normal">
-                                                KDV
+                                                KDV %8
                                             </span>
                                         </th>
                                         <th
@@ -171,7 +189,7 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                             scope="row"
                                         >
                                             <span className="font-normal">
-                                                61₺
+                                                {customer?.tax}₺
                                             </span>
                                         </th>
                                     </tr>
@@ -191,7 +209,10 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                             scope="row"
                                         >
                                             <span className="font-normal">
-                                                611.00₺
+                                                {customer?.totalAmount.toFixed(
+                                                    2
+                                                )}
+                                                ₺
                                             </span>
                                         </th>
                                     </tr>
@@ -218,22 +239,6 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                                         ürünlerin özel iade şartlarına aykırı
                                         durumlarda iade kabul edilmeyecek, bu
                                         ürünlerin bedel iadesi yapılmayacaktır.
-                                        Ürün zarar görmüş, eksik veya ilan
-                                        edilenden farklı ise nasıl iade
-                                        edebilirimMevzuat gereği, cayma süresi
-                                        (mal satışına ilişkin işlemlerde
-                                        teslimat tarihinden itibaren, hizmet
-                                        satışına ilişkin işlemlerde satın
-                                        almanın yapıldığı tarihten itibaren 14
-                                        gün) içinde alıcı ürünü, işleyişine,
-                                        teknik özelliklerine ve kullanım
-                                        talimatlarına uygun bir şekilde
-                                        kullandığı takdirde meydana gelen
-                                        değişiklik ve bozulmalardan sorumlu
-                                        değildir. Olağan dışı kullanımdan dolayı
-                                        oluşacak bozulmalardan ise alıcı sorumlu
-                                        olacaktır ve bu durumda satıcı iadeyi
-                                        onaylamayabilir.
                                     </p>
                                 </div>
                             </div>
@@ -242,7 +247,12 @@ const PrintBill = ({ isModalOpen, setIsModalOpen }) => {
                 </div>
             </section>
             <div className="flex justify-end mt-4">
-                <Button className="" type="primary" size="large">
+                <Button
+                    className=""
+                    type="primary"
+                    size="large"
+                    onClick={handlePrint}
+                >
                     Yazdır
                 </Button>
             </div>

@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
+const logger = require("morgan");
 
 //routes
 const categoryRoute = require("./routes/categories.js");
@@ -15,6 +16,7 @@ dotenv.config();
 const app = express();
 const port = 5000;
 //middlewares
+app.use(logger("dev"));
 app.use(express.json());
 app.use(cors());
 

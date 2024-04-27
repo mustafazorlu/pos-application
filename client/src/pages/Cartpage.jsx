@@ -116,26 +116,39 @@ const Cartpage = () => {
                     dataSource={cart.cartItems}
                     columns={columns}
                     pagination={false}
+                    scroll={{
+                        x: 1200,
+                        y: 300,
+                    }}
                 />
                 <div className="cart-total flex justify-end">
                     <Card className="w-72 mt-6">
                         <div className="flex justify-between">
                             <span>Ara Toplam</span>
-                            <span>548.00₺</span>
+                            <span>{cart.total.toFixed(2)}₺</span>
                         </div>
                         <div className="flex justify-between my-2">
-                            <span>KDV Toplam %8</span>
-                            <span className="text-red-600">+43.92₺</span>
+                            <span>KDV Değeri %{cart.tax}</span>
+                            <span className="text-red-600">
+                                +{((cart.total * cart.tax) / 100).toFixed(2)}₺
+                            </span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-bold">Toplam</span>
-                            <span className="font-bold">548.00₺</span>
+                            <span className="font-bold">Genel Toplam</span>
+                            <span className="font-bold">
+                                {(
+                                    cart.total +
+                                    (cart.total * cart.tax) / 100
+                                ).toFixed(2)}
+                                ₺
+                            </span>
                         </div>
                         <Button
                             type="primary"
                             className="mt-3 w-full"
                             size="large"
                             onClick={() => setIsModalOpen(true)}
+                            disabled={cart.cartItems.length === 0}
                         >
                             Sipariş Oluştur
                         </Button>

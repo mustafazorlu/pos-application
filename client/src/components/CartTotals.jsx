@@ -3,10 +3,12 @@ import { Button, message } from "antd";
 import { ClearOutlined, PlusOutlined, MinusOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { decrease, deleteCart, increase, reset } from "../redux/cartslice";
+import { useNavigate } from "react-router-dom";
 
 const CartTotals = () => {
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     return (
         <div className="cart flex flex-col h-full max-h-[calc(100vh_-_72px)]">
@@ -15,66 +17,70 @@ const CartTotals = () => {
             </h2>
             <ul className="cart-items px-2 py-2 flex flex-col gap-y-3 overflow-y-auto">
                 {cart.cartItems.length > 0
-                    ? cart.cartItems.map((item) => (
-                          <li
-                              key={item._id}
-                              className="cart-item flex items-center justify-between"
-                          >
-                              <div className="flex items-center">
-                                  <img
-                                      src={item.img}
-                                      alt=""
-                                      className="w-16 h-16 object-cover"
-                                      onClick={() => {
-                                          dispatch(deleteCart(item));
-                                          message.warning(
-                                              "Ürün sepetten silindi"
-                                          );
-                                      }}
-                                  />
-                                  <div className="flex flex-col ml-2">
-                                      <b>{item.title}</b>
-                                      <span>
-                                          {item.price}₺ x {item.quantity}
-                                      </span>
+                    ? cart.cartItems
+                          .map((item) => (
+                              <li
+                                  key={item._id}
+                                  className="cart-item flex items-center justify-between"
+                              >
+                                  <div className="flex items-center">
+                                      <img
+                                          src={item.img}
+                                          alt=""
+                                          className="w-16 h-16 object-cover"
+                                          onClick={() => {
+                                              dispatch(deleteCart(item));
+                                              message.warning(
+                                                  "Ürün sepetten silindi"
+                                              );
+                                          }}
+                                      />
+                                      <div className="flex flex-col ml-2">
+                                          <b>{item.title}</b>
+                                          <span>
+                                              {item.price}₺ x {item.quantity}
+                                          </span>
+                                      </div>
                                   </div>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                  <Button
-                                      type="primary"
-                                      size="small"
-                                      icon={<PlusOutlined />}
-                                      onClick={() => dispatch(increase(item))}
-                                  ></Button>
-                                  <span className="w-5 inline-block text-center">
-                                      {item.quantity}
-                                  </span>
-                                  <Button
-                                      type="primary"
-                                      size="small"
-                                      icon={<MinusOutlined />}
-                                      //burası önemli !!! bu mantığı anla :D
-                                      onClick={() => {
-                                          if (item.quantity === 1) {
-                                              if (
-                                                  window.confirm(
-                                                      "Ürün silinsin mi?"
-                                                  )
-                                              ) {
-                                                  dispatch(decrease(item));
-                                                  message.warning(
-                                                      "Ürün sepetten silindi"
-                                                  );
+                                  <div className="flex items-center gap-2">
+                                      <Button
+                                          type="primary"
+                                          size="small"
+                                          icon={<PlusOutlined />}
+                                          onClick={() =>
+                                              dispatch(increase(item))
+                                          }
+                                      ></Button>
+                                      <span className="w-5 inline-block text-center">
+                                          {item.quantity}
+                                      </span>
+                                      <Button
+                                          type="primary"
+                                          size="small"
+                                          icon={<MinusOutlined />}
+                                          //burası önemli !!! bu mantığı anla :D
+                                          onClick={() => {
+                                              if (item.quantity === 1) {
+                                                  if (
+                                                      window.confirm(
+                                                          "Ürün silinsin mi?"
+                                                      )
+                                                  ) {
+                                                      dispatch(decrease(item));
+                                                      message.warning(
+                                                          "Ürün sepetten silindi"
+                                                      );
+                                                  }
                                               }
-                                          }
-                                          if (item.quantity > 1) {
-                                              dispatch(decrease(item));
-                                          }
-                                      }}
-                                  ></Button>
-                              </div>
-                          </li>
-                      ))
+                                              if (item.quantity > 1) {
+                                                  dispatch(decrease(item));
+                                              }
+                                          }}
+                                      ></Button>
+                                  </div>
+                              </li>
+                          ))
+                          .reverse()
                     : "Sepette hiç ürün yok.."}
             </ul>
             <div className="cart-totals mt-auto">
@@ -84,7 +90,7 @@ const CartTotals = () => {
                         <span>{cart.total.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between p-2">
-                        <b>KDV %{cart.tax}</b>
+                        <b>KDV Değeri %{cart.tax}</b>
                         <span className="text-red-700">
                             +{((cart.total * cart.tax) / 100).toFixed(2)}
                         </span>
@@ -107,6 +113,7 @@ const CartTotals = () => {
                         size="large"
                         className="w-full"
                         disabled={cart.cartItems.length > 0 ? false : true}
+                        onClick={() => navigate("/cart")}
                     >
                         Sipariş Oluştur
                     </Button>

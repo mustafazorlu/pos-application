@@ -1,14 +1,31 @@
-import { Button, Carousel, Form, Input } from "antd";
-import React from "react";
+import { Button, Carousel, Form, Input, message } from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-    const contentStyle = {
-        height: "160px",
-        color: "#fff",
-        lineHeight: "160px",
-        textAlign: "center",
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+
+    const onFinish = async (values) => {
+        setLoading(true);
+        try {
+            const res = await fetch("http://localhost:5000/api/auth/register", {
+                method: "POST",
+                body: JSON.stringify(values),
+                headers: { "Content-type": "application/json; charset=UTF-8" },
+            });
+            if (res.status === 200) {
+                message.success("Kayıt işlemi başarılı");
+                navigate("/login");
+                setLoading(false);
+            }
+        } catch (error) {
+            message.error("Bir şeyler yanlış gitti");
+            console.log(error);
+        }
     };
+
     return (
         <div className="h-screen">
             <div className="flex justify-between h-full">
@@ -16,7 +33,7 @@ const Register = () => {
                     <h1 className="text-center text-5xl font-bold mb-2">
                         LOGO
                     </h1>
-                    <Form layout="vertical">
+                    <Form layout="vertical" onFinish={onFinish}>
                         <Form.Item
                             label="Kullanıcı adı"
                             name={"username"}
@@ -87,6 +104,7 @@ const Register = () => {
                                 htmlType="submit"
                                 size="large"
                                 className="w-full"
+                                loading={loading}
                             >
                                 Kaydol
                             </Button>
