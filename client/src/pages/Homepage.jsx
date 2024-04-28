@@ -6,6 +6,8 @@ import Header from "../components/Header";
 
 const Homepage = () => {
     const [categories, setCategories] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [filtered, setFiltered] = useState([]);
 
     const getCategories = async () => {
         try {
@@ -27,7 +29,21 @@ const Homepage = () => {
             console.log(error);
         }
     };
+
+    const getProducts = async () => {
+        try {
+            const res = await fetch(
+                "http://localhost:5000/api/products/get-all"
+            );
+            const data = await res.json();
+            setProducts(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
+        getProducts();
         getCategories();
     }, []);
 
@@ -39,10 +55,18 @@ const Homepage = () => {
                     <Categories
                         categories={categories}
                         setCategories={setCategories}
+                        products={products}
+                        setProducts={setProducts}
+                        setFiltered={setFiltered}
                     />
                 </div>
                 <div className="products flex-[8] max-h-[calc(100vh_-_97px)] overflow-auto">
-                    <Products categories={categories} />
+                    <Products
+                        categories={categories}
+                        products={products}
+                        setProducts={setProducts}
+                        filtered={filtered}
+                    />
                 </div>
                 <div className="cart-totals min-w-[300px] md:-mr-[24px] md:-mt-[24px] border-l">
                     <CartTotals />

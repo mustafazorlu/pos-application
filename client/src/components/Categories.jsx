@@ -1,17 +1,30 @@
 import { PlusOutlined, EditOutlined } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddCategoriesModal from "../modals/AddCategoriesModal";
 import "../styles/categories.css";
 import EditCategoriesModal from "../modals/EditCategoriesModal";
 
-const Categories = ({ categories, setCategories }) => {
+const Categories = ({ categories, setCategories, setFiltered, products }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [categoryTitle, setCategoryTitle] = useState("Deneme");
+
+    useEffect(() => {
+        if (categoryTitle === "Deneme") {
+            setFiltered(products);
+        }else{
+            setFiltered(products.filter(item => item.category === categoryTitle))
+        }
+    }, [products, setFiltered, categoryTitle]);
 
     return (
         <ul className="flex md:flex-col gap-4">
             {categories.map((item, index) => (
-                <li key={index} className="category-item">
+                <li
+                    key={index}
+                    className="category-item"
+                    onClick={() => setCategoryTitle(item.title)}
+                >
                     <span>{item.title}</span>
                 </li>
             ))}
