@@ -28,7 +28,7 @@ router.post("/login", async (req, res) => {
         // !user && res.status(404).send({ error: "User not found" });
         if (!user) {
             return res.status(404).send({ error: "User not found!" });
-          }
+        }
 
         const validPassword = await bcrypt.compare(
             req.body.password,
@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
 
         res.send(user);
     } catch (error) {
-        res.status(400).json(error);
+        // res.status(400).json(error);
     }
 });
 
