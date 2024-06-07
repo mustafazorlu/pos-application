@@ -6,8 +6,16 @@ import Customerpage from "./pages/Customerpage";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import ProductPage from "./pages/ProductPage";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 function App() {
+    const cart = useSelector((state) => state.cart);
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart))
+    }, [cart])
+    
     return (
         <div className="App">
             <BrowserRouter>

@@ -11,7 +11,7 @@ import {
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Header = () => {
+const Header = ({ search, setSearch }) => {
     const navigate = useNavigate();
     const logOut = () => {
         if (window.confirm("Çıkış yapmak istediğinize emin misiniz?")) {
@@ -26,7 +26,7 @@ const Header = () => {
             <header className="py-4 px-6 flex items-center justify-between gap-10">
                 <div className="logo">
                     <Link to="/">
-                        <h2 className="text-2xl font-bold md:text-4xl">LOGO</h2>
+                        <h2 className="text-2xl font-bold md:text-4xl">POSMARKET</h2>
                     </Link>
                 </div>
                 <div className="header-search flex-1 flex justify-center">
@@ -35,6 +35,9 @@ const Header = () => {
                         placeholder="Ürün ara.."
                         prefix={<SearchOutlined />}
                         className="rounded-full max-w-[800px]"
+                        onChange={(e) =>
+                            setSearch(e.target.value.toLowerCase())
+                        }
                     />
                 </div>
                 <div className="menu-links z-50 flex justify-between items-center gap-7 md:static fixed bottom-0 md:w-auto w-full md:bg-transparent left-0 border-t md:border-t-0 md:p-0 p-4 bg-white">
@@ -68,28 +71,15 @@ const Header = () => {
                         <UserOutlined className="text-xl" />
                         <span className="text-sm">Müşteriler</span>
                     </Link>
-                    {/* <Link
-                        to="/statistic"
-                        className="flex flex-col items-center hover:text-[#40a9ff]"
-                    >
-                        <BarChartOutlined className="text-xl" />
-                        <span className="text-sm">İstatistikler</span>
-                    </Link> */}
                     <div onClick={logOut}>
-                        <Link
-                            href="#/"
-                            className="flex flex-col items-center hover:text-[#40a9ff]"
-                        >
+                        <Link className="flex flex-col items-center hover:text-[#40a9ff]">
                             <LogoutOutlined className="text-xl" />
                             <span className="text-sm">Çıkış</span>
                         </Link>
                     </div>
                 </div>
                 <Badge count={cartItems.length} className="md:hidden flex">
-                    <Link
-                        href="#/"
-                        className="flex flex-col items-center hover:text-[#40a9ff]"
-                    >
+                    <Link className="flex flex-col items-center hover:text-[#40a9ff]">
                         <ShoppingCartOutlined className="text-2xl" />
                         <span className="text-sm">Sepet</span>
                     </Link>

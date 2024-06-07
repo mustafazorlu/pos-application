@@ -10,11 +10,16 @@ const Register = () => {
     const onFinish = async (values) => {
         setLoading(true);
         try {
-            const res = await fetch("http://localhost:5000/api/auth/register", {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: { "Content-type": "application/json; charset=UTF-8" },
-            });
+            const res = await fetch(
+                process.env.REACT_APP_SERVER_URL + "/api/auth/register",
+                {
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                    },
+                }
+            );
             if (res.status === 200) {
                 message.success("Kayıt işlemi başarılı");
                 navigate("/login");

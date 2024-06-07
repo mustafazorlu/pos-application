@@ -3,8 +3,12 @@ import { createSlice } from "@reduxjs/toolkit";
 const cartSlice = createSlice({
     name: "cart",
     initialState: {
-        cartItems: [],
-        total: 0,
+        cartItems: localStorage.getItem("cart")
+            ? JSON.parse(localStorage.getItem("cart")).cartItems
+            : [],
+        total: localStorage.getItem("cart")
+        ? JSON.parse(localStorage.getItem("cart")).total
+        : 0,
         tax: 8,
     },
     //burada olay tanımlıyoruz
@@ -52,13 +56,14 @@ const cartSlice = createSlice({
 
             state.total -= cartItem.price;
         },
-        reset:(state,action) =>{
+        reset: (state, action) => {
             state.cartItems = [];
             state.total = 0;
-        }
+        },
     },
 });
 // console.log(cartSlice.actions);
 
-export const { addProduct, deleteCart, increase, decrease, reset } = cartSlice.actions;
+export const { addProduct, deleteCart, increase, decrease, reset } =
+    cartSlice.actions;
 export default cartSlice.reducer;

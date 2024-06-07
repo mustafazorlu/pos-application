@@ -23,7 +23,7 @@ const PrintBill = ({ isModalOpen, setIsModalOpen, customer }) => {
                     <article className="overflow-hidden">
                         <div className="logo my-6">
                             <h2 className="text-4xl font-bold text-slate-700">
-                                LOGO
+                                POSMARKET
                             </h2>
                         </div>
                         <div className="bill-details">

@@ -11,11 +11,17 @@ const AddCategoriesModal = ({
     const onFinish = (values) => {
         try {
             //inputtaki kategorileri post ile mongodbye gönderdik
-            fetch("http://localhost:5000/api/categories/add-category", {
-                method: "POST",
-                body: JSON.stringify(values),
-                headers: { "Content-type": "application/json; charset=UTF-8" },
-            });
+            fetch(
+                process.env.REACT_APP_SERVER_URL +
+                    "/api/categories/add-category",
+                {
+                    method: "POST",
+                    body: JSON.stringify(values),
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8",
+                    },
+                }
+            );
             console.log(values);
             message.success("Kategori başarıyla eklendi.");
             form.resetFields();

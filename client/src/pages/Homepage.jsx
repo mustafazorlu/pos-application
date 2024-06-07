@@ -8,11 +8,12 @@ const Homepage = () => {
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
     const [filtered, setFiltered] = useState([]);
+    const [search, setSearch] = useState("");
 
     const getCategories = async () => {
         try {
             const res = await fetch(
-                "http://localhost:5000/api/categories/get-all"
+                process.env.REACT_APP_SERVER_URL + "/api/categories/get-all"
             );
             const data = await res.json();
             data &&
@@ -33,7 +34,7 @@ const Homepage = () => {
     const getProducts = async () => {
         try {
             const res = await fetch(
-                "http://localhost:5000/api/products/get-all"
+                process.env.REACT_APP_SERVER_URL + "/api/products/get-all"
             );
             const data = await res.json();
             setProducts(data);
@@ -49,7 +50,7 @@ const Homepage = () => {
 
     return (
         <>
-            <Header />
+            <Header search={search} setSearch={setSearch} />
             <div className="home px-6 flex flex-col md:flex-row gap-10 justify-between">
                 <div className="categories flex-1 overflow-auto max-h-[calc(100vh_-_97px)]">
                     <Categories
@@ -66,6 +67,7 @@ const Homepage = () => {
                         products={products}
                         setProducts={setProducts}
                         filtered={filtered}
+                        search={search}
                     />
                 </div>
                 <div className="cart-totals min-w-[300px] md:-mr-[24px] md:-mt-[24px] border-l">

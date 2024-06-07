@@ -7,10 +7,10 @@ import EditCategoriesModal from "../modals/EditCategoriesModal";
 const Categories = ({ categories, setCategories, setFiltered, products }) => {
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [categoryTitle, setCategoryTitle] = useState("Deneme");
+    const [categoryTitle, setCategoryTitle] = useState("Tümü");
 
     useEffect(() => {
-        if (categoryTitle === "Deneme") {
+        if (categoryTitle === "Tümü") {
             setFiltered(products);
         }else{
             setFiltered(products.filter(item => item.category === categoryTitle))

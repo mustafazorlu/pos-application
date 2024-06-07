@@ -11,7 +11,7 @@ const CartTotals = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="cart flex flex-col h-full max-h-[calc(100vh_-_72px)]">
+        <div className="cart flex flex-col mb-24 border-r lg:border-r-0 lg:mb-0 h-full md:h-[calc(100vh_-_73px)]">
             <h2 className="bg-blue-600 text-center py-4 text-white font-bold tracking-wide">
                 Sepetteki Ürünler
             </h2>
