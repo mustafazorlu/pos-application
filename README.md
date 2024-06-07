@@ -38,6 +38,6 @@ Proje, insanların kolayca alışveriş yapabilmeleri için oluşturulmuş temel
 
  
 
-Projenin hosting işlemleri render.com üzerinden yapılmıştır. 
+Projenin hosting işlemleri render.com üzerinden yapılmıştır.
 
-> <a href="https://pos-application-togu-client.onrender.com/login">POSMARKET</a>
+> <a href="https://pos-application-togu-client.onrender.com">POSMARKET</a>
